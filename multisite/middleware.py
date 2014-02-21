@@ -11,7 +11,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import get_callable
 from django.db.models.signals import pre_save, post_delete, post_init
 from django.http import Http404, HttpResponsePermanentRedirect
-from django.utils.hashcompat import md5_constructor
+from hashlib import md5
 
 from .models import Alias
 
@@ -34,7 +34,7 @@ class DynamicSiteMiddleware(object):
 
     def get_cache_key(self, netloc):
         """Returns a cache key based on ``netloc``."""
-        netloc = md5_constructor(netloc)
+        netloc = md5(netloc)
         return 'multisite.alias.%s.%s' % (self.key_prefix,
                                           netloc.hexdigest())
 
